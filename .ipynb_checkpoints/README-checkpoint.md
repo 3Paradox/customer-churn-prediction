@@ -193,20 +193,28 @@ This project was built to showcase a complete, production-oriented data science 
 - Interview-ready summary cells with actual numbers baked in
 
 ---
-
 ## 📸 Screenshots
 
-### Overview Dashboard
-![Overview](outputs/screenshots/overview.png)
-*4 KPI cards, risk segment pie chart, churn by contract type and tenure group, global SHAP drivers*
+### Overview — KPI Cards & Risk Segments
+![Overview 1](outputs/screenshots/overview_1.png)
 
-### Customer Explorer
-![Customer Explorer](outputs/screenshots/customer_explorer.png)
-*Individual customer risk badge, SHAP waterfall explanation, retention recommendation*
+### Overview — Tenure Analysis & SHAP Drivers
+![Overview 2](outputs/screenshots/overview_2.png)
 
-### Revenue Impact Calculator
-![Revenue Calculator](outputs/screenshots/revenue_calculator.png)
-*Interactive sliders, live ROI calculation, top 10 priority customers table*
+### Customer Explorer — Risk Badge & Profile
+![Explorer 1](outputs/screenshots/explorer_1.png)
+
+### Customer Explorer — Retention Recommendation & SHAP Waterfall
+![Explorer 2](outputs/screenshots/explorer_2.png)
+
+### Customer Explorer — SHAP Waterfall (continued)
+![Explorer 3](outputs/screenshots/explorer_3.png)
+
+### Revenue Calculator — Sliders & Projected Impact
+![Calculator 1](outputs/screenshots/calculator_1.png)
+
+### Revenue Calculator — Top 10 Priority Customers
+![Calculator 2](outputs/screenshots/calculator_2.png)
 
 ---
 
