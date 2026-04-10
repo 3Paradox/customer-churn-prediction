@@ -241,3 +241,14 @@ The cost matrix is asymmetric: missing a churner costs **$74/month** in lost rev
 while a false positive costs only **$10** in discount offers (7.4:1 ratio).
 Under these economics, the model maximises profit by casting a wider net.
 This is standard practice in telecom — see Neslin et al. (2006), Journal of Marketing Research.
+
+## What Didn't Work (and Why)
+
+**Random Forest underperformed XGBoost on PR-AUC (0.6033 vs 0.6611)**
+Random Forest builds trees independently and uses majority voting, which doesn't optimise directly for ranking probabilities. XGBoost uses gradient boosting — each tree corrects the errors of the previous one — making it better at separating the minority churn class from the majority non-churn class. On imbalanced datasets where PR-AUC matters, this sequential correction gives XGBoost a consistent edge.
+
+**Default threshold (0.50) was suboptimal**
+Using threshold=0.50 left $5,648/month of recoverable profit on the table. Cost-sensitive optimization revealed the true optimal threshold given telecom's asymmetric cost structure.
+
+**n_jobs=-1 caused BrokenProcessPool on this machine**
+Parallel processing with n_jobs=-1 caused worker process crashes during GridSearchCV. Fixed by setting n_jobs=1. This is a known issue with certain macOS + Python 3.13 combinations.
