@@ -360,7 +360,4 @@ elif page == "💰 Revenue Calculator":
     st.dataframe(top10.reset_index(drop=True), use_container_width=True, height=380)
 
     st.markdown("---")
-    st.info(
-        f"💡 Retaining {retain_pct}% of High Risk customers with a {discount_pct}% discount "
-        f"saves ${net_saved_monthly:,.0f}/month net — or ${net_saved_annual:,.0f} annually."
-    )
+st.info("💡 Why contact so many customers? Optimal threshold = 0.13 because missing a churner costs $74/month but a false alarm costs only $10 (7.4:1 ratio). Casting a wider net maximises profit — standard telecom practice.")

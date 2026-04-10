@@ -236,3 +236,8 @@ Third-year Plastic Technology student at HBTU Kanpur, transitioning into Data Sc
 
 [![GitHub](https://img.shields.io/badge/GitHub-3Paradox-181717?style=flat&logo=github)](https://github.com/3Paradox)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat&logo=linkedin)](https://www.linkedin.com/in/tushar-gupta-8b1317373)
+### Why is the Optimal Threshold 0.13?
+The cost matrix is asymmetric: missing a churner costs **$74/month** in lost revenue,
+while a false positive costs only **$10** in discount offers (7.4:1 ratio).
+Under these economics, the model maximises profit by casting a wider net.
+This is standard practice in telecom — see Neslin et al. (2006), Journal of Marketing Research.

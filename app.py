@@ -46,9 +46,20 @@ def load_model():
 
 @st.cache_data
 def load_clean():
+
     return pd.read_csv('data/telco_clean.csv')
 
 df       = load_data()
+
+@st.cache_resource
+def get_comparison_models(_X_tr, _y_tr):
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.ensemble import RandomForestClassifier
+    lr = LogisticRegression(class_weight="balanced", max_iter=1000, random_state=42)
+    rf = RandomForestClassifier(class_weight="balanced", n_estimators=100, random_state=42, n_jobs=1)
+    lr.fit(_X_tr, _y_tr)
+    rf.fit(_X_tr, _y_tr)
+    return lr, rf
 model    = load_model()
 df_clean = load_clean()
 
@@ -71,13 +82,13 @@ with st.sidebar:
     st.markdown("Optimised for PR-AUC / F1")
     st.markdown("---")
     st.markdown("### 🔗 Links")
-    st.markdown("[📁 GitHub Repository](https://github.com)")
+    st.markdown("[📁 GitHub Repository](https://github.com/3Paradox/customer-churn-prediction)")
     st.markdown("---")
     st.caption("Built with Python · XGBoost · SHAP · Streamlit")
 
 page = st.radio(
     label="Navigate",
-    options=["📊 Overview", "🔍 Customer Explorer", "💰 Revenue Calculator"],
+    options=["📊 Overview", "🔍 Customer Explorer", "💰 Revenue Calculator", "📈 Model Performance"],
     horizontal=True,
     label_visibility="collapsed"
 )
@@ -332,6 +343,7 @@ elif page == "💰 Revenue Calculator":
     net_saved_monthly  = gross_saved - discount_cost
     net_saved_annual   = net_saved_monthly * 12
 
+    st.info(":bulb: **Why contact so many customers?** Optimal threshold = 0.13 because missing a churner costs \$74/month but a false alarm costs only \$10 (7.4:1 ratio). Casting a wider net maximises profit — standard telecom practice.")
     st.subheader("📈 Projected Impact")
     r1, r2, r3, r4 = st.columns(4)
     r1.metric("👥 Customers Retained",  f"{customers_retained:,}")
@@ -360,7 +372,120 @@ elif page == "💰 Revenue Calculator":
     st.dataframe(top10.reset_index(drop=True), use_container_width=True, height=380)
 
     st.markdown("---")
-    st.info(
-        f"💡 Retaining {retain_pct}% of High Risk customers with a {discount_pct}% discount "
-        f"saves ${net_saved_monthly:,.0f}/month net — or ${net_saved_annual:,.0f} annually."
-    )
+
+# ═══════════════════════════════════════════════
+# PAGE 4 - MODEL PERFORMANCE
+# ═══════════════════════════════════════════════
+elif page == "📈 Model Performance":
+    st.header("📈 Model Performance")
+    st.markdown("Honest evaluation of the XGBoost churn model across all key metrics.")
+
+    import pickle
+    import numpy as np
+    from sklearn.model_selection import train_test_split
+    from sklearn.metrics import (roc_curve, auc, precision_recall_curve,
+                                 confusion_matrix, roc_auc_score, f1_score,
+                                 precision_score, recall_score, brier_score_loss)
+    from sklearn.calibration import calibration_curve
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.ensemble import RandomForestClassifier
+    import matplotlib.pyplot as plt
+
+    df_perf = load_data()
+    drop_cols = ['customerID', 'Churn', 'Churn_Binary', 'segment', 'predicted_churn_prob', 'revenue_at_risk']
+    X_p = df_perf.drop(columns=[c for c in drop_cols if c in df_perf.columns])
+    y_p = df_perf['Churn_Binary']
+    X_tr, X_te, y_tr, y_te = train_test_split(
+        X_p, y_p, test_size=0.2, random_state=42, stratify=y_p)
+    y_prob = model.predict_proba(X_te)[:, 1]
+    y_pred = model.predict(X_te)
+
+    col1, col2, col3, col4, col5 = st.columns(5)
+    col1.metric("ROC-AUC",    f"{roc_auc_score(y_te, y_prob):.4f}")
+    col2.metric("PR-AUC",     f"{auc(*precision_recall_curve(y_te, y_prob)[1::-1]):.4f}")
+    col3.metric("F1 (Churn)", f"{f1_score(y_te, y_pred):.4f}")
+    col4.metric("Recall",     f"{recall_score(y_te, y_pred):.4f}")
+    col5.metric("Brier Score",f"{brier_score_loss(y_te, y_prob):.4f}")
+
+    st.markdown("---")
+
+    c1, c2 = st.columns(2)
+    with c1:
+        fpr, tpr, _ = roc_curve(y_te, y_prob)
+        fig, ax = plt.subplots(figsize=(5, 4))
+        ax.plot(fpr, tpr, color='#E05C5C', lw=2, label=f'XGBoost (AUC = {auc(fpr, tpr):.4f})')
+        ax.plot([0,1],[0,1],'k--', lw=1)
+        ax.set_xlabel('False Positive Rate')
+        ax.set_ylabel('True Positive Rate')
+        ax.set_title('ROC Curve', fontweight='bold')
+        ax.legend(loc='lower right', fontsize=9)
+        plt.tight_layout()
+        st.pyplot(fig)
+        plt.close()
+
+    with c2:
+        prec, rec, _ = precision_recall_curve(y_te, y_prob)
+        fig, ax = plt.subplots(figsize=(5, 4))
+        ax.plot(rec, prec, color='#E05C5C', lw=2, label=f'XGBoost (PR-AUC = {auc(rec, prec):.4f})')
+        ax.set_xlabel('Recall')
+        ax.set_ylabel('Precision')
+        ax.set_title('Precision-Recall Curve', fontweight='bold')
+        ax.legend(fontsize=9)
+        plt.tight_layout()
+        st.pyplot(fig)
+        plt.close()
+
+    c3, c4 = st.columns(2)
+    with c3:
+        cm = confusion_matrix(y_te, y_pred)
+        fig, ax = plt.subplots(figsize=(5, 4))
+        ax.imshow(cm, cmap='Reds')
+        ax.set_xticks([0,1]); ax.set_yticks([0,1])
+        ax.set_xticklabels(['No Churn','Churn'])
+        ax.set_yticklabels(['No Churn','Churn'])
+        ax.set_xlabel('Predicted'); ax.set_ylabel('Actual')
+        ax.set_title('Confusion Matrix', fontweight='bold')
+        for i in range(2):
+            for j in range(2):
+                ax.text(j, i, str(cm[i,j]), ha='center', va='center',
+                        fontsize=16, fontweight='bold',
+                        color='white' if cm[i,j] > cm.max()/2 else 'black')
+        plt.tight_layout()
+        st.pyplot(fig)
+        plt.close()
+
+    with c4:
+        fop, mpv = calibration_curve(y_te, y_prob, n_bins=10)
+        fig, ax = plt.subplots(figsize=(5, 4))
+        ax.plot(mpv, fop, 's-', color='#E05C5C', label='XGBoost')
+        ax.plot([0,1],[0,1],'k--', label='Perfect calibration')
+        ax.set_xlabel('Mean Predicted Probability')
+        ax.set_ylabel('Fraction of Positives')
+        ax.set_title('Calibration Curve', fontweight='bold')
+        ax.legend(fontsize=9)
+        plt.tight_layout()
+        st.pyplot(fig)
+        plt.close()
+
+    st.markdown("---")
+    st.subheader("Model Comparison — Why XGBoost?")
+    lr = LogisticRegression(class_weight='balanced', max_iter=1000, random_state=42)
+    rf = RandomForestClassifier(class_weight='balanced', n_estimators=100, random_state=42, n_jobs=1)
+    lr, rf = get_comparison_models(X_tr, y_tr)
+
+    rows = []
+    for name, m in [('Logistic Regression', lr), ('Random Forest', rf), ('XGBoost (tuned)', model)]:
+        pb = m.predict_proba(X_te)[:, 1]
+        pd_ = m.predict(X_te)
+        p2, r2, _ = precision_recall_curve(y_te, pb)
+        rows.append({
+            'Model': name,
+            'ROC-AUC': round(roc_auc_score(y_te, pb), 4),
+            'PR-AUC':  round(auc(r2, p2), 4),
+            'F1 (Churn)': round(f1_score(y_te, pd_), 4),
+            'Brier Score': round(brier_score_loss(y_te, pb), 4)
+        })
+
+    import pandas as pd
+    st.dataframe(pd.DataFrame(rows).set_index('Model'), use_container_width=True)
+    st.caption("XGBoost wins on PR-AUC and F1 after hyperparameter tuning — the metrics that matter most for imbalanced churn data.")
