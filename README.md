@@ -252,3 +252,21 @@ Using threshold=0.50 left $5,648/month of recoverable profit on the table. Cost-
 
 **n_jobs=-1 caused BrokenProcessPool on this machine**
 Parallel processing with n_jobs=-1 caused worker process crashes during GridSearchCV. Fixed by setting n_jobs=1. This is a known issue with certain macOS + Python 3.13 combinations.
+
+## Screenshots
+
+### 📊 Overview Dashboard
+![Overview 1](assets/overview1.png)
+![Overview 2](assets/overview2.png)
+
+### 🔍 Customer Explorer + SHAP
+![Explorer 1](assets/explorer1.png)
+![Explorer 2](assets/explorer2.png)
+
+### 💰 Revenue Impact Calculator
+![Revenue 1](assets/revenue1.png)
+![Revenue 2](assets/revenue2.png)
+
+### 📈 Model Performance
+![Model 1](assets/model1.png)
+![Model 2](assets/model2.png)
