@@ -1,5 +1,8 @@
 # 📉 Customer Churn Prediction & Business Intelligence System
 
+## 🌐 Live Demo
+👉 [Open Live Dashboard](https://3paradox-customer-churn-prediction-app-ib3wnq.streamlit.app)
+
 > An end-to-end machine learning system that predicts which telecom customers will churn,
 > explains *why* using SHAP values, and quantifies the exact revenue at risk —
 > deployed as an interactive Streamlit dashboard.
