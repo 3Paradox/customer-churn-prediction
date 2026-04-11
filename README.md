@@ -5,9 +5,6 @@
 ## 🌐 Live Demo
 👉 [Open Live Dashboard](https://3paradox-customer-churn-prediction-app-ib3wnq.streamlit.app)
 
-> An end-to-end machine learning system that predicts which telecom customers will churn,
-> explains *why* using SHAP values, and quantifies the exact revenue at risk —
-> deployed as an interactive Streamlit dashboard.
 
 ![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![XGBoost](https://img.shields.io/badge/XGBoost-2.0-189AB4?style=for-the-badge&logo=xgboost&logoColor=white)
@@ -76,7 +73,7 @@ or Safe (< 0.4) with specific retention actions mapped to each tier.
 |---|---|
 | Data Manipulation | pandas, numpy |
 | Visualisation | matplotlib, seaborn, plotly |
-| Machine Learning | scikit-learn, XGBoost |
+| Machine Learning | scikit-learn, XGBoost, Optuna |
 | Class Imbalance | imbalanced-learn (scale_pos_weight) |
 | Explainability | SHAP (TreeExplainer, waterfall plots) |
 | Data Storage | SQLite (sqlite3) |
@@ -196,7 +193,7 @@ This project was built to showcase a complete, production-oriented data science 
 
 **Visualisation & Communication**
 - 7 publication-quality EDA plots (matplotlib/seaborn)
-- Interactive Streamlit dashboard with 3 pages (plotly)
+- Interactive Streamlit dashboard with 4 pages (plotly)
 - Interview-ready summary cells with actual numbers baked in
 
 ---
