@@ -28,7 +28,7 @@
 | ROC-AUC | **0.8445** |
 | Monthly Revenue at Risk Identified | **$139,130** |
 | Annual Revenue at Risk | **$1,670,000+** |
-| Dataset Size | 7,043 customers · 21 raw features · ~58 engineered features |
+| Dataset Size | 7,043 customers · 21 raw features · 54 engineered features |
 
 **Top 3 Churn Drivers (SHAP):**
 1. **Contract Type** — Month-to-month customers churn at 42% vs 3% for 2-year contracts
