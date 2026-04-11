@@ -31,9 +31,9 @@
 | Dataset Size | 7,043 customers · 21 raw features · 54 engineered features |
 
 **Top 3 Churn Drivers (SHAP):**
-1. **Contract Type** — Month-to-month customers churn at 42% vs 3% for 2-year contracts
-2. **Tenure** — Customers in their first 12 months are the highest risk group
-3. **Monthly Charges** — Churners pay $74/month on average vs $61 for stayers
+1. **Contract Type** — Having a month-to-month contract is the single strongest feature pushing predicted churn probability upward. Switching a customer to an annual contract is the highest-ROI retention action the model identifies.
+2. **Tenure** — Low tenure values strongly increase predicted churn probability. The model has learned that the first 12 months is the critical retention window — not just that new customers churn more.
+3. **Monthly Charges** — Higher charges push churn probability up marginally, but the direction reverses for customers with add-on services — suggesting price sensitivity is mediated by perceived value, not price alone.
 
 ---
 
@@ -105,7 +105,7 @@ churn_project/
 │   ├── shap_waterfall_high.png                  ← high risk customer explanation
 │   ├── shap_waterfall_mid.png                   ← borderline customer explanation
 │   └── shap_waterfall_low.png                   ← safe customer explanation
-└── app.py                                       ← Streamlit dashboard (3 pages)
+└── app.py                                       ← Streamlit dashboard (4 pages)
 ```
 
 ---
