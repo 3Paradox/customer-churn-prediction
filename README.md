@@ -1,4 +1,6 @@
-# 📉 Customer Churn Prediction & Business Intelligence System
+# 📉 Customer Churn Intelligence System
+
+> **Telecom companies lose $1.67M/year to preventable churn.** This system identifies which customers are about to leave, explains *why* using SHAP values, and calculates exactly how much revenue a retention campaign would save — optimised using cost-sensitive threshold analysis with a real business cost matrix (FN costs 7.4x more than FP).
 
 ## 🌐 Live Demo
 👉 [Open Live Dashboard](https://3paradox-customer-churn-prediction-app-ib3wnq.streamlit.app)
