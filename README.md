@@ -246,3 +246,21 @@ Parallel processing with n_jobs=-1 caused worker process crashes during GridSear
 ### 📈 Model Performance
 ![Model 1](assets/model1.png)
 ![Model 2](assets/model2.png)
+
+## ⚡ Hyperparameter Tuning — GridSearch vs Optuna
+
+| Method | PR-AUC | ROC-AUC | F1 |
+|--------|--------|---------|-----|
+| GridSearchCV | 0.6618 | 0.8445 | 0.6270 |
+| Optuna (50 trials) | 0.6646 | 0.8465 | 0.6339 |
+
+Optuna uses Bayesian optimization — each trial learns from previous results to find better parameters faster than grid search. Marginal but genuine improvement across all metrics.
+
+## 🏭 Production Considerations
+
+| Concern | Approach |
+|---------|----------|
+| Model drift | Retrain monthly on new billing data; monitor PR-AUC drop |
+| Data drift | Track feature distributions with PSI score on tenure and MonthlyCharges |
+| A/B testing | Split high-risk customers 50/50 — retention offer vs control — measure 30-day churn delta |
+| Threshold updates | Re-run cost matrix quarterly as retention campaign costs change |
