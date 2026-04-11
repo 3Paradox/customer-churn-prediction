@@ -27,6 +27,7 @@
 | ROC-AUC | **0.8465** |
 | Monthly Revenue at Risk Identified | **$139,130** |
 | Annual Revenue at Risk | **$1,670,000+** |
+| Estimated Recoverable Revenue (15% retention rate) | **$250,500/year** |
 | Dataset Size | 7,043 customers · 21 raw features · 54 engineered features |
 
 **Top 3 Churn Drivers (SHAP):**
@@ -264,3 +265,11 @@ Optuna uses Bayesian optimization — each trial learns from previous results to
 | Data drift | Track feature distributions with PSI score on tenure and MonthlyCharges |
 | A/B testing | Split high-risk customers 50/50 — retention offer vs control — measure 30-day churn delta |
 | Threshold updates | Re-run cost matrix quarterly as retention campaign costs change |
+
+## 🔬 Known Limitations & Next Steps
+
+**Calibration:** The XGBoost model is slightly overconfident at high probability ranges (visible in the calibration curve — predicted probabilities exceed observed churn rates above 0.6). Next step: wrap with `CalibratedClassifierCV(method='isotonic')` to ensure revenue-at-risk dollar estimates are financially precise.
+
+**Threshold:** The optimal threshold of 0.13 is derived from a 7.4:1 FN:FP cost ratio specific to this dataset's telecom economics. In production, this would be recalibrated quarterly as retention campaign costs change.
+
+**Scope:** Model trained on a single telecom's 2018 customer base. Generalisation to other markets would require retraining on local data and validating the cost matrix assumptions.
