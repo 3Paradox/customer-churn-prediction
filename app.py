@@ -31,7 +31,10 @@ def load_data():
         model = load_model()
         drop_cols = [c for c in ['customerID','Churn','Churn_Binary'] if c in df.columns]
         X = df.drop(columns=drop_cols)
-        X = X.select_dtypes(include=['int64','float64','bool'])
+        import json
+        with open('outputs/feature_columns.json') as f:
+            feature_cols = json.load(f)
+        X = X[feature_cols]
         df['predicted_churn_prob'] = model.predict_proba(X)[:, 1]
         df['revenue_at_risk']      = df['predicted_churn_prob'] * df['MonthlyCharges']
         df['segment'] = df['predicted_churn_prob'].apply(
@@ -66,7 +69,10 @@ df_clean = load_clean()
 drop_cols = [c for c in ['customerID','Churn','Churn_Binary',
                           'predicted_churn_prob','revenue_at_risk','segment'] if c in df.columns]
 X_all = df.drop(columns=drop_cols)
-X_all = X_all.select_dtypes(include=['int64','float64','bool'])
+import json
+with open('outputs/feature_columns.json') as f:
+    feature_cols = json.load(f)
+X_all = X_all[feature_cols]
 
 with st.sidebar:
     st.markdown("## 📉 Churn Intelligence")
