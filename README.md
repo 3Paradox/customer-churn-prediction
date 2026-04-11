@@ -23,11 +23,11 @@
 | Metric | Value |
 |---|---|
 | Model | XGBoost Classifier |
-| F1 Score (Churn Class) | **0.63** |
-| Precision (Churn Class) | **0.52** |
-| Recall (Churn Class) | **0.79** |
-| PR-AUC | **0.66** |
-| ROC-AUC | **0.8445** |
+| F1 Score (Churn Class) | **0.6339** |
+| Precision (Churn Class) | **0.5206** |
+| Recall (Churn Class) | **0.8102** |
+| PR-AUC | **0.6652** |
+| ROC-AUC | **0.8465** |
 | Monthly Revenue at Risk Identified | **$139,130** |
 | Annual Revenue at Risk | **$1,670,000+** |
 | Dataset Size | 7,043 customers · 21 raw features · 54 engineered features |
