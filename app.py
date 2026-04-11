@@ -406,12 +406,14 @@ elif page == "📈 Model Performance":
     y_prob = model.predict_proba(X_te)[:, 1]
     y_pred = model.predict(X_te)
 
-    col1, col2, col3, col4, col5 = st.columns(5)
+    col1, col2, col3, col4, col5, col6 = st.columns(6)
     col1.metric("ROC-AUC",    f"{roc_auc_score(y_te, y_prob):.4f}")
     col2.metric("PR-AUC",     f"{auc(*precision_recall_curve(y_te, y_prob)[1::-1]):.4f}")
     col3.metric("F1 (Churn)", f"{f1_score(y_te, y_pred):.4f}")
     col4.metric("Recall",     f"{recall_score(y_te, y_pred):.4f}")
-    col5.metric("Brier Score",f"{brier_score_loss(y_te, y_prob):.4f}")
+    col5.metric("Precision", f"{precision_score(y_te, y_pred):.4f}")
+
+    col6.metric("Brier Score",f"{brier_score_loss(y_te, y_prob):.4f}")
 
     st.markdown("---")
 
