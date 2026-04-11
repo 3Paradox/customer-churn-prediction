@@ -85,7 +85,7 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("### 🧠 Model")
     st.markdown("**XGBoost Classifier**")
-    st.markdown("Optimised with Optuna · PR-AUC 0.6652")
+    st.markdown("Optimised with Optuna · PR-AUC 0.6646")
     st.markdown("---")
     st.markdown("### 🔗 Links")
     st.markdown("[📁 GitHub Repository](https://github.com/3Paradox/customer-churn-prediction)")

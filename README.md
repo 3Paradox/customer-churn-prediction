@@ -26,7 +26,7 @@
 | F1 Score (Churn Class) | **0.6339** |
 | Precision (Churn Class) | **0.5206** |
 | Recall (Churn Class) | **0.8102** |
-| PR-AUC | **0.6652** |
+| PR-AUC | **0.6646** |
 | ROC-AUC | **0.8465** |
 | Monthly Revenue at Risk Identified | **$139,130** |
 | Annual Revenue at Risk | **$1,670,000+** |
