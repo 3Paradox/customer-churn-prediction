@@ -27,8 +27,11 @@
 | ROC-AUC | **0.8465** |
 | Monthly Revenue at Risk Identified | **$139,130** |
 | Annual Revenue at Risk | **$1,670,000+** |
-| Estimated Recoverable Revenue (15% retention rate) | **$250,500/year** |
+| Estimated Recoverable Revenue (15% campaign success rate¹) | **$250,500/year** |
 | Dataset Size | 7,043 customers · 21 raw features · 54 engineered features |
+
+
+> ¹ Industry-average retention campaign success rate of 15% (Neslin et al., 2006, Journal of Marketing Research). Actual recovery depends on campaign execution and customer segment.
 
 **Top 3 Churn Drivers (SHAP):**
 1. **Contract Type** — Having a month-to-month contract is the single strongest feature pushing predicted churn probability upward. Switching a customer to an annual contract is the highest-ROI retention action the model identifies.

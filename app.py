@@ -38,7 +38,7 @@ def load_data():
         df['predicted_churn_prob'] = model.predict_proba(X)[:, 1]
         df['revenue_at_risk']      = df['predicted_churn_prob'] * df['MonthlyCharges']
         df['segment'] = df['predicted_churn_prob'].apply(
-            lambda p: 'High Risk' if p > 0.7 else ('Medium Risk' if p >= 0.4 else 'Safe')
+            lambda p: 'High Risk' if p > 0.7 else ('Medium Risk' if p >= 0.4 else 'Safe')  # Display buckets only — prediction threshold is 0.13 (cost-optimised)
         )
     return df
 
@@ -453,6 +453,8 @@ elif page == "📈 Model Performance":
         ax.set_yticklabels(['No Churn','Churn'])
         ax.set_xlabel('Predicted'); ax.set_ylabel('Actual')
         ax.set_title('Confusion Matrix', fontweight='bold')
+        st.caption("Evaluated at threshold = 0.50 for fair model comparison. Production deployment uses cost-optimised threshold = 0.13 — see Revenue Calculator.")
+
         for i in range(2):
             for j in range(2):
                 ax.text(j, i, str(cm[i,j]), ha='center', va='center',
